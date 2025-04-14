@@ -215,14 +215,15 @@ export default {
 <style scoped>
 .large-header {
   background-color: #e8dabd;
-  /* 移除透明度和模糊效果 */
   z-index: 1000;
-  /* 修改为浮动岛状侧边栏 */
   position: fixed;
   left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
+  /* 确保与logo岛保持最小间距 */
+  top: 154px;
+  /* logo岛的top(64px) + height(70px) + 最小间距(20px) */
   height: auto;
+  max-height: calc(100vh - 250px);
+  /* 确保不会超出视口，并与logo岛保持距离 */
   width: 70px;
   padding: 20px 0;
   display: flex;
@@ -354,6 +355,8 @@ export default {
 @media (max-width: 768px) {
   .large-header {
     width: 60px;
+    top: 144px;
+    /* 调整后的间距计算：60px + 64px + 20px */
   }
 
   .logo-island {
@@ -372,9 +375,9 @@ export default {
 
 @media (max-height: 600px) {
   .large-header {
-    top: 100px;
-    transform: none;
-    height: calc(100vh - 200px);
+    top: 154px;
+    /* 保持固定间距 */
+    height: calc(100vh - 250px);
   }
 
   .icons-section {
