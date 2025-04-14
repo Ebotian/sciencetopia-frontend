@@ -163,10 +163,15 @@ export default {
 
 .main-content {
   flex: 1;
-  margin-left: 80px;
-  /* 与侧边栏宽度相同 */
+  margin-left: 0;
+  /* 移除左侧边距，让内容完全全宽显示 */
   padding: var(--content-padding, 16px);
   transition: margin-left 0.3s ease;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  background-image: none;
 }
 
 .mobile-content {

@@ -1,91 +1,73 @@
 <template>
   <div class="knowledgegraph-container">
     <!-- 知识网络 -->
-    <!-- <v-col cols="8" class="knowledge-graph"> -->
     <KnowledgeNetwork>
       <!-- Slot content for full-screen overlay -->
       <div class="fullscreen-overlay-content">
-        <NodeCreationForm
-          v-if="this.$store.state.displayNodeCreationForm"
-        ></NodeCreationForm>
-        <LinkCreationForm
-          v-else-if="this.$store.state.displayLinkCreationForm"
-        ></LinkCreationForm>
+        <NodeCreationForm v-if="this.$store.state.displayNodeCreationForm"></NodeCreationForm>
+        <LinkCreationForm v-else-if="this.$store.state.displayLinkCreationForm"></LinkCreationForm>
         <NodeInfo v-else></NodeInfo>
       </div>
     </KnowledgeNetwork>
-    <!-- <p>一个可以查询节点内容和生成学习路径的知识网络</p> -->
-    <!-- </v-col> -->
-    <div
-      class="non-fullscreen-content"
-      :style="{ transform: `translateX(${offset}px)` }"
-    >
-      <NodeCreationForm
-        v-if="this.$store.state.displayNodeCreationForm"
-      ></NodeCreationForm>
-      <LinkCreationForm
-        v-else-if="this.$store.state.displayLinkCreationForm"
-      ></LinkCreationForm>
+    
+    <div class="non-fullscreen-content">
+      <NodeCreationForm v-if="this.$store.state.displayNodeCreationForm"></NodeCreationForm>
+      <LinkCreationForm v-else-if="this.$store.state.displayLinkCreationForm"></LinkCreationForm>
       <NodeInfo v-else></NodeInfo>
     </div>
   </div>
 
-  <!-- 分割线 -->
-  <!-- <v-divider color="text" opacity="0" style="margin-top: 100vh;"></v-divider> -->
+  <!-- 动态推送 - 使用v-show控制显示与否 -->
+  <div v-show="showFeedSection" class="feed-modal">
+    <div class="feed-close-btn">
+      <v-btn icon @click="showFeedSection = false">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </div>
+    
+    <div class="feed-container">
+      <v-container id="feed-section">
+        <v-row>
+          <v-col class="trend-cols">
+            <v-btn class="split-color-container" variant="plain">
+              <h1 class="split-color-text">{{ $t('header.trend') }}</h1>
+            </v-btn>
+          </v-col>
+          <v-col class="feed-cols dot-lattice-container">
+            <v-btn variant="plain">
+              <h1 class="feed-text">{{ $t('header.production') }}</h1>
+            </v-btn>
+            <v-divider color="secondary" :thickness="2" opacity="1"></v-divider>
+            <v-btn variant="plain">
+              <h1 class="feed-text">{{ $t('header.Learning') }}</h1>
+            </v-btn>
+            <v-divider color="secondary" :thickness="2" opacity="1"></v-divider>
+            <v-btn variant="plain">
+              <h1 class="feed-text">{{ $t('header.research') }}</h1>
+            </v-btn>
+          </v-col>
+          <v-col class="refresh-col">
+            <v-btn variant="plain">
+              <h2><v-icon class="refresh-text">mdi-refresh</v-icon></h2>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
 
-  <!-- 动态推送 -->
-  <div class="feed-container">
-    <v-container id="feed-section">
-      <v-row>
-        <v-col class="trend-cols">
-          <v-btn class="split-color-container" variant="plain">
-            <h1 class="split-color-text">{{ $t('header.trend') }}</h1>
-          </v-btn>
-        </v-col>
-        <v-col class="feed-cols dot-lattice-container">
-          <v-btn variant="plain">
-            <h1 class="feed-text">{{ $t('header.production') }}</h1>
-          </v-btn>
-          <v-divider color="secondary" :thickness="2" opacity="1"></v-divider>
-          <v-btn variant="plain">
-            <h1 class="feed-text">{{ $t('header.Learning') }}</h1>
-          </v-btn>
-          <v-divider color="secondary" :thickness="2" opacity="1"></v-divider>
-          <v-btn variant="plain">
-            <h1 class="feed-text">{{ $t('header.research') }}</h1>
-          </v-btn>
-        </v-col>
-        <v-col class="refresh-col">
-          <v-btn variant="plain">
-            <h2><v-icon class="refresh-text">mdi-refresh</v-icon></h2>
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
+      <v-divider color="darkred" :thickness="2" opacity="1" style="margin-top: 40px; margin-left: 120px"></v-divider>
 
-    <v-divider
-      color="darkred"
-      :thickness="2"
-      opacity="1"
-      style="margin-top: 40px; margin-left: 120px"
-    ></v-divider>
+      <v-spacer style="height: 60px"></v-spacer>
 
-    <v-spacer style="height: 60px"></v-spacer>
-
-    <v-container>
-      <v-row>
-        <v-col v-for="media in mediaList" :key="media.id" cols="3">
-          <mediaFeed
-            :cover="media.cover"
-            :title="media.title"
-            :author="media.author"
-            :date="media.date"
-          ></mediaFeed>
-        </v-col>
-      </v-row>
-    </v-container>
-    <!-- Final Footer -->
-    <DefaultFooterBar />
+      <v-container>
+        <v-row>
+          <v-col v-for="media in mediaList" :key="media.id" cols="3">
+            <mediaFeed :cover="media.cover" :title="media.title" :author="media.author" :date="media.date"></mediaFeed>
+          </v-col>
+        </v-row>
+      </v-container>
+      <!-- Final Footer -->
+      <DefaultFooterBar />
+    </div>
   </div>
 </template>
 
@@ -96,6 +78,7 @@ import MediaFeed from '@/components/MediaFeed.vue'
 import NodeCreationForm from '@/components/NodeCreationForm.vue'
 import LinkCreationForm from '@/components/LinkCreationForm.vue'
 import DefaultFooterBar from '@/components/DefaultFooterBar.vue'
+import { eventBus } from '@/eventBus' // 导入事件总线
 
 export default {
   name: 'HomePage',
@@ -111,7 +94,7 @@ export default {
     return {
       displayNodeCreationForm: false,
       isFullScreen: false,
-      offset: 0,
+      showFeedSection: false, // 控制动态推送区域显示/隐藏
       mediaList: [
         {
           id: 1,
@@ -145,26 +128,32 @@ export default {
       ],
     }
   },
-
-  methods: {
-    handleScroll() {
-      this.offset = window.scrollY // Adjust speed multiplier for smooth movement
-    },
+  created() {
+    // 添加事件监听器，用于接收来自HeaderBar的指令
+    eventBus.on('show-feed-section', this.showFeed)
   },
-
-  mounted() {
-    window.addEventListener('scroll', this.handleScroll) // Attach scroll listener
-  },
-
   beforeUnmount() {
-    window.removeEventListener('scroll', this.handleScroll) // Cleanup scroll listener
+    // 移除事件监听器
+    eventBus.off('show-feed-section', this.showFeed)
   },
+  methods: {
+    showFeed() {
+      this.showFeedSection = true
+    }
+  }
 }
 </script>
 
 <style scoped>
 @import '../assets/css/special-text.css';
 @import '../assets/css/knowledge-graph.css';
+
+/* 设置主容器高度为视口高度，禁止滚动 */
+.knowledgegraph-container {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
 
 .fullscreen-overlay-content {
   position: fixed;
@@ -212,8 +201,31 @@ export default {
   /* Ensures it's always on top */
   pointer-events: auto;
   /* Allows interactions */
-  transition: transform 0.1s linear;
-  /* Smooth horizontal movement */
+}
+
+/* 动态推送模态框样式 */
+.feed-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  z-index: 2000;
+  /* 确保在最上层 */
+  overflow-y: auto;
+}
+
+.feed-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2001;
+}
+
+.feed-container {
+  width: 100%;
+  padding-top: 60px;
 }
 
 .trend-cols {
@@ -224,7 +236,6 @@ export default {
 .feed-cols {
   position: absolute;
   left: 1vw;
-  /* top: 110vh; */
 }
 
 .refresh-col {
@@ -236,17 +247,5 @@ export default {
 
 .refresh-text {
   color: #c8001d;
-}
-
-.feed-container {
-  position: relative;
-  top: 100vh;
-  left: 0vw;
-  width: 100vw;
-  background-color: rgba(232, 218, 189, 0.6);
-  backdrop-filter: blur(10px);
-  /* 磨砂效果 */
-  -webkit-backdrop-filter: blur(10px);
-  /* 兼容 Safari */
 }
 </style>

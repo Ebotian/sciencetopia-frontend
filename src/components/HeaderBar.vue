@@ -143,12 +143,10 @@ export default {
       this.$router.push({ name: 'HomePage' })
     },
     scrollToSection() {
-      const section = document.getElementById('feed-section')
-      if (section) {
-        const yOffset = -60
-        const y = section.getBoundingClientRect().top + window.scrollY + yOffset
-        window.scrollTo({ top: y, behavior: 'smooth' })
-      }
+      // 导入事件总线系统并使用它来触发显示动态区域
+      import('@/eventBus').then(({ eventBus }) => {
+        eventBus.emit('show-feed-section')
+      })
     },
     async globalSearch() {
       const query = this.searchQuery.trim()
