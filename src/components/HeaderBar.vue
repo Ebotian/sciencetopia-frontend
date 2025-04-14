@@ -241,7 +241,7 @@ export default {
 .logo-island {
   position: fixed;
   left: 16px;
-  top: 16px;
+  top: 64px;
   width: 70px;
   height: 70px;
   border-radius: 50%;
