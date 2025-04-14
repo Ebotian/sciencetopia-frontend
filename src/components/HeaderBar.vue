@@ -143,10 +143,7 @@ export default {
       this.$router.push({ name: 'HomePage' })
     },
     scrollToSection() {
-      // 导入事件总线系统并使用它来触发显示动态区域
-      import('@/eventBus').then(({ eventBus }) => {
-        eventBus.emit('show-feed-section')
-      })
+      this.$router.push({ name: 'allFeeds' })
     },
     async globalSearch() {
       const query = this.searchQuery.trim()

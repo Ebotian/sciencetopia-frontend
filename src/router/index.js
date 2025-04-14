@@ -96,6 +96,17 @@ const routes = [
     component: StudyGroupList,
   },
   {
+    path: '/allfeeds',
+    name: 'allFeeds',
+    component: () => import('@/components/Feed/FeedList.vue'),
+  },
+  {
+    path: '/feed/:feedId',
+    name: 'feedDetail',
+    component: () => import('@/components/Feed/FeedDetail.vue'),
+    props: true,
+  },
+  {
     path: '/createstudygroup',
     name: 'createStudyGroup',
     component: CreateStudyGroup,
