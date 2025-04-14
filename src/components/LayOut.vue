@@ -7,12 +7,6 @@
       <v-icon>{{ mobileMenuOpen ? 'mdi-close' : 'mdi-menu' }}</v-icon>
     </div>
 
-    <transition name="header-transition">
-      <v-app-bar app fixed dense elevated v-if="scrolledPastHeader && !isSmallScreen" class="thin-app-bar">
-        <ThinHeaderBar @showStudyPlanDialog="handleDialogClick" />
-      </v-app-bar>
-    </transition>
-
     <v-dialog v-model="dialog" persistent :max-width="$vuetify.display.smAndDown ? '100%' : '800px'"
       :fullscreen="$vuetify.display.smAndDown">
       <v-card>
@@ -27,7 +21,7 @@
           </v-btn>
           <v-btn color="blue darken-1" text @click="closeDialog">{{
             $t('close')
-            }}</v-btn>
+          }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -53,7 +47,6 @@
 <script>
 import LearningPlanner from './LearningPlanner.vue'
 import HeaderBar from './HeaderBar.vue'
-import ThinHeaderBar from './ThinHeaderBar.vue'
 import FooterBar from './FooterBar.vue'
 import DefaultFooterBar from './DefaultFooterBar.vue'
 import ScrollToTopButton from './ScrollToTopButton.vue'
@@ -63,7 +56,6 @@ export default {
   components: {
     LearningPlanner,
     HeaderBar,
-    ThinHeaderBar,
     FooterBar,
     DefaultFooterBar,
     ScrollToTopButton,
@@ -73,14 +65,12 @@ export default {
       isLoading: false,
       dialog: false,
       showStudyPlan: false,
-      scrolledPastHeader: false,
       showFinalFooter: false,
       isSmallScreen: window.innerWidth <= 600,
       mobileMenuOpen: false,
     }
   },
   mounted() {
-    window.addEventListener('scroll', this.handleScroll)
     window.addEventListener('resize', this.handleResize)
     this.handleResize()
 
@@ -88,20 +78,12 @@ export default {
     document.body.classList.add('sidebar-layout')
   },
   beforeUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
     window.removeEventListener('resize', this.handleResize)
 
     // 移除侧边栏状态
     document.body.classList.remove('sidebar-layout')
   },
   methods: {
-    handleScroll() {
-      const headerHeight =
-        document.querySelector('.large-header')?.offsetHeight || 0
-      this.scrolledPastHeader = window.scrollY > headerHeight
-      const bottomThreshold = window.scrollY >= 60
-      this.showFinalFooter = bottomThreshold
-    },
     handleResize() {
       this.isSmallScreen = window.innerWidth <= 600
 
@@ -219,15 +201,6 @@ export default {
   }
 }
 
-.thin-app-bar {
-  min-height: 80px;
-  /* 确保有足够的高度显示 padding */
-  background-color: rgba(232, 218, 189, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: none;
-}
-
 .header-container {
   background-color: #e8dabd;
   top: 0;
@@ -298,11 +271,6 @@ body.modal-open .main-content {
   .main-content {
     --content-padding: 8px;
     margin-left: 0;
-  }
-
-  .thin-app-bar {
-    min-height: 80px;
-    /* 确保有足够的高度显示 padding */
   }
 
   .dynamic-footer {

@@ -59,26 +59,24 @@ const routes = [
     name: 'StudyPlanDetail',
     component: StudyPlanDetail,
     props: true,
-    meta: { layout: 'thin' },
   },
   {
     path: '/:userId/message',
     name: 'messagecenter',
     component: MessageCenter,
-    meta: { layout: 'thin' },
     props: true,
     children: [
       {
         path: 'directMessages',
         name: 'directMessages',
         component: MessageCenter,
-        props: (route) => ({ userId: route.params.userId }), // Pass userId explicitly
+        props: (route) => ({ userId: route.params.userId }),
       },
       {
         path: 'notifications',
         name: 'notifications',
         component: MessageCenter,
-        props: (route) => ({ userId: route.params.userId }), // Pass userId explicitly
+        props: (route) => ({ userId: route.params.userId }),
       },
     ],
   },
@@ -106,20 +104,19 @@ const routes = [
     path: '/studygroup/:groupId',
     name: 'studyGroupPage',
     component: StudyGroupPage,
-    props: true, // Enables the route parameter to be passed as a prop to the component
-    meta: { layout: 'thin' },
+    props: true,
     children: [
       {
         path: 'studyGroupSpace',
         name: 'studyGroupSpace',
         component: StudyGroupPage,
-        props: (route) => ({ groupId: route.params.groupId }), // Pass userId explicitly
+        props: (route) => ({ groupId: route.params.groupId }),
       },
       {
         path: 'managePanel',
         name: 'managePanel',
         component: StudyGroupPage,
-        props: (route) => ({ groupId: route.params.groupId }), // Pass userId explicitly
+        props: (route) => ({ groupId: route.params.groupId }),
       },
     ],
   },
