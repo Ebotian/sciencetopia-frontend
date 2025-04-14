@@ -3,7 +3,7 @@
     <!-- 根据登录状态动态显示悬停提示 -->
     <v-tooltip v-if="!isAuthenticated" :text="$t('header.toseemessage')" location="right" open-delay="300">
       <template v-slot:activator="{ props }">
-        <v-btn v-bind="props" class="icon-btn" variant="text" disabled>
+        <v-btn v-bind="props" class="icon-btn" variant="text">
           <v-icon :size="iconSize">mdi-bell</v-icon>
           <div v-if="messageCount > 0" class="alert-badge">
             {{ messageCount > 99 ? '99+' : messageCount }}
@@ -13,16 +13,20 @@
       </template>
     </v-tooltip>
 
-    <!-- 登录状态下显示下拉菜单 -->
+    <!-- 登录状态下显示下拉菜单并添加悬停提示 -->
     <v-menu v-else open-on-hover>
-      <template v-slot:activator="{ props }">
-        <v-btn v-bind="props" class="icon-btn" variant="text">
-          <v-icon :size="iconSize">mdi-bell</v-icon>
-          <div v-if="messageCount > 0" class="alert-badge">
-            {{ messageCount > 99 ? '99+' : messageCount }}
-          </div>
-          <div v-else-if="notificationCount > 0" class="alert-badge-dot"></div>
-        </v-btn>
+      <template v-slot:activator="{ props: menuProps }">
+        <v-tooltip location="right" open-delay="300" :text="$t('header.messages')">
+          <template v-slot:activator="{ props: tooltipProps }">
+            <v-btn v-bind="{ ...tooltipProps, ...menuProps }" class="icon-btn" variant="text">
+              <v-icon :size="iconSize">mdi-bell</v-icon>
+              <div v-if="messageCount > 0" class="alert-badge">
+                {{ messageCount > 99 ? '99+' : messageCount }}
+              </div>
+              <div v-else-if="notificationCount > 0" class="alert-badge-dot"></div>
+            </v-btn>
+          </template>
+        </v-tooltip>
       </template>
 
       <!-- 下拉菜单: 仅当已登录(isAuthenticated)时才显示 -->

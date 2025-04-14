@@ -9,7 +9,7 @@
         <NodeInfo v-else></NodeInfo>
       </div>
     </KnowledgeNetwork>
-    
+
     <div class="non-fullscreen-content">
       <NodeCreationForm v-if="this.$store.state.displayNodeCreationForm"></NodeCreationForm>
       <LinkCreationForm v-else-if="this.$store.state.displayLinkCreationForm"></LinkCreationForm>
@@ -24,7 +24,7 @@
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </div>
-    
+
     <div class="feed-container">
       <v-container id="feed-section">
         <v-row>
