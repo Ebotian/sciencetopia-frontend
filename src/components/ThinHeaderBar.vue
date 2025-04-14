@@ -254,20 +254,17 @@ export default {
 
 <style scoped>
 .large-header {
-  background-color: rgba(232, 218, 189, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: #e8dabd;
+  /* 移除模糊效果和透明度 */
   transition: all 0.3s ease;
   z-index: 1000;
   padding: 16px 0;
-  /* Ensure padding is visible */
   width: 100%;
   position: relative;
   min-height: 80px;
   display: flex;
   align-items: center;
   overflow: hidden;
-  /* Fix overflow issues */
 }
 
 .header-grid {

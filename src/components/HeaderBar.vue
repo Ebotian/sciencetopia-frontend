@@ -217,10 +217,8 @@ export default {
 
 <style scoped>
 .large-header {
-  background-color: transparent;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  transition: all 0.3s ease;
+  background-color: #e8dabd;
+  /* 移除透明度和模糊效果 */
   z-index: 1000;
   /* 修改为浮动岛状侧边栏 */
   position: fixed;
@@ -247,9 +245,7 @@ export default {
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background-color: transparent;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background-color: #e8dabd;
   display: flex;
   align-items: center;
   justify-content: center;
